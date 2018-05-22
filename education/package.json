@@ -13,10 +13,11 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^2.0.2",
+    "eth-crypto": "^1.1.1",
     "openzeppelin-solidity": "^1.9.0",
+    "solidity-sha3": "0.4.1",
     "truffle": "^4.1.8",
-    "truffle-hdwallet-provider": "0.0.3",
-    "solidity-sha3": "0.4.1"
+    "truffle-hdwallet-provider": "0.0.3"
   },
   "author": "",
   "license": "ISC"

@@ -11,7 +11,7 @@ contract("CourseRegistry", function([deployer, author, student]) {
    const link = "yandex.ru";
 
    before(async function() {
-      this.registry = await CourseRegistry.new("Hackaton", "WIN", { from: deployer });
+      this.registry = await CourseRegistry.deployed();
 
       await this.registry.createCourse(author, "Blockchain Introduction", { from: deployer });
 
