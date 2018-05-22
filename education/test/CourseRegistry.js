@@ -10,12 +10,17 @@ const EthCrypto = require("eth-crypto");
 contract("CourseRegistry", function([deployer, author, student]) {
    const link = "yandex.ru";
 
+   let encryptedLink = "";
+
    before(async function() {
       this.registry = await CourseRegistry.deployed();
 
       await this.registry.createCourse(author, "Blockchain Introduction", { from: deployer });
 
       this.course = Course.at(await this.registry.findCourseByID(0));
+
+      this.author = EthCrypto.createIdentity();
+      this.student = EthCrypto.createIdentity();
    });
 
    it("should be initialized correctly", async function() {
@@ -24,13 +29,23 @@ contract("CourseRegistry", function([deployer, author, student]) {
       expect(await this.course.author()).to.be.equal(author);
    });
 
+   it("should encrypt link", async function() {
+      encryptedLink = await EthCrypto.encryptWithPublicKey(this.student.publicKey, link);
+   });
+
+   it("should decrypt link", async function() {
+      const decryptedLink = await EthCrypto.decryptWithPrivateKey(this.student.privateKey, encryptedLink);
+
+      expect(decryptedLink).to.be.equal(link);
+   });
+
    it("should fail to create ticket from non-author", async function() {
-      await expectThrow(this.course.createStudentTicket(student, link, { from: deployer }));
+      await expectThrow(this.course.createStudentTicket(student, encryptedLink, { from: deployer }));
    });
 
    it("should create ticket with encrypted link", async function() {
-      await this.course.createStudentTicket(student, link, { from: author });
+      await this.course.createStudentTicket(student, encryptedLink, { from: author });
 
-      expect(await this.course.tokenURI(1)).to.be.equal(link);
+      expect(await this.course.tokenURI(1)).to.be.equal(encryptedLink);
    });
 });
