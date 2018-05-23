@@ -10,7 +10,7 @@ if(!fs.existsSync(path.resolve(__dirname, "mnemonic"))) {
 
 const mnemonic = fs.readFileSync(path.resolve(__dirname, "mnemonic")).toString().trim();
 const deployer = "0xeea8b1619f4063f816051ae056758686ec58b7fd";
-const registryAddress = "0xBC4C4293796f32a2e4E0287d958d505310512bAb";
+const registryAddress = "0x18f6f3b24303d043921c5b7325a560614feed50b";
 
 const network = {
     provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/")
@@ -65,6 +65,8 @@ module.exports = {
         const course = await Course.at(courseAddress);
 
         const link = await course.tokenURI.call(tokenID);
+
+        console.log(link);
 
         return link;
     }

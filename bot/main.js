@@ -93,9 +93,7 @@ window.onload = function() {
 
             const encryptedLink = document.getElementById('encryptedLink').value;
 
-            const result = await EthCrypto.decryptWithPrivateKey(privateKey, encryptedLink);
-
-            document.getElementById('result').innerHTML = result;
+            console.log(encryptedLink);
         });
     }
 };
