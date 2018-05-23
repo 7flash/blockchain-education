@@ -7,7 +7,7 @@ const expectThrow = utils.expectThrow;
 
 const EthCrypto = require("eth-crypto");
 
-contract("CourseRegistry", function([deployer, author, student]) {
+contract("CourseRegistry", function([deployer, author, student, anotherStudent]) {
    const link = "yandex.ru";
 
    let encryptedLink = "";
@@ -15,7 +15,7 @@ contract("CourseRegistry", function([deployer, author, student]) {
    before(async function() {
       this.registry = await CourseRegistry.deployed();
 
-      await this.registry.createCourse(author, "Blockchain Introduction", { from: deployer });
+      await this.registry.createCourse(author, "Blockchain Introduction", { from: author });
 
       this.course = Course.at(await this.registry.findCourseByID(0));
 
@@ -44,11 +44,42 @@ contract("CourseRegistry", function([deployer, author, student]) {
    });
 
    it("should fail to create ticket from non-author", async function() {
-      await expectThrow(this.course.createStudentTicket(student, encryptedLink, { from: deployer }));
+      await expectThrow(this.course.createStudentToken(student, encryptedLink, { from: deployer }));
    });
 
    it("should create ticket with encrypted link", async function() {
-      await this.course.createStudentTicket(student, encryptedLink, { from: author });
-
+      await this.course.createStudentToken(student, encryptedLink, { from: author });
    });
+
+   it("should fail to create a ticket for the same student", async function() {
+       await expectThrow(this.course.createStudentToken(student, encryptedLink, { from: author }));
+   });
+
+   /*
+   it("should create ticket for another student through proxy", async function() {
+       const signHash = EthCrypto.hash.keccak256([
+           {
+               type: 'string',
+               value: 'course2018'
+           },
+           {
+               type: 'address',
+               value: this.course.address
+           },
+           {
+               type: 'address',
+               value: student
+           }
+       ]);
+
+       const signature = EthCrypto.sign(
+           authorPrivateKey,
+           signHash
+       );
+
+       const vrs = EthCrypto.vrs.fromString(signature);
+
+       await this.course.createStudentTokenProxy(vrs.v, vrs.r, vrs.s, anotherStudent, encryptedLink, { from: deployer });
+   });
+   */
 });
