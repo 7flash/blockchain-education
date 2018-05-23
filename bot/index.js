@@ -83,7 +83,7 @@ bot.onText(/\/access/, async (message) => {
     const courseID = data.courseID;
     const tokenID = data.tokenID;
 
-    const link = await blockchain.access(courseID, tokenID);
+    const link = await blockchain.access.call(courseID, tokenID);
 
     bot.sendMessage(message.chat.id, link);
 });
