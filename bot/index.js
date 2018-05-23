@@ -78,12 +78,12 @@ bot.onText(/\/share/, async (message) => {
 });
 
 bot.onText(/\/access/, async (message) => {
-    const data = JSON.parse(message.text.splice(7));
+    const data = JSON.parse(message.text.slice(7));
 
     const courseID = data.courseID;
     const tokenID = data.tokenID;
 
-    const link = await blockchain.access(courseID, tokenID);
+    const link = await blockchain.access.call(courseID, tokenID);
 
     bot.sendMessage(message.chat.id, link);
 });
