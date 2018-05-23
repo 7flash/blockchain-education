@@ -94,7 +94,11 @@ window.onload = function() {
 
             const encryptedLinkObject = EthCrypto.cipher.parse(encryptedLink);
 
+            console.log(encryptedLinkObject);
+
             const result = await EthCrypto.decryptWithPrivateKey(privateKey, encryptedLinkObject);
+
+            console.log(result);
 
             document.getElementById('result').innerHTML = result;
         });
