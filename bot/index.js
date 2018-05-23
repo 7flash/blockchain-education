@@ -22,23 +22,19 @@ bot.onText(/\/start/, (message) => {
            inline_keyboard: [
                [{
                     text: "Сгенерировать ключ",
-                    url: "http://google.ru"
+                    url: "https://7flash.github.io/blockchain-education/bot/generate.html"
                }],
                [{
                     text: "Опубликовать курс",
-                    url: "http://google.ru/publish.html"
+                    url: "https://7flash.github.io/blockchain-education/bot/publish.html"
                }],
                [{
                     text: "Открыть доступ ученику",
-                    url: "http://google.ru"
-               }],
-               [{
-                    text: "Получить курс",
-                    url: "http://google.ru"
+                    url: "https://7flash.github.io/blockchain-education/bot/share.html"
                }],
                [{
                     text: "Расшифровать курс",
-                    url: "http://google.ru"
+                    url: "https://7flash.github.io/blockchain-education/bot/access.html"
                }]
            ]
        }
