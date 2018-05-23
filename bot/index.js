@@ -4,6 +4,8 @@ const bot = new Bot("522910329:AAHnueFevFwgr6oSiEGpT-KV9EwexlHJg7U", { polling: 
 
 const blockchain = require("./blockchain");
 
+const EthCrypto = require("eth-crypto");
+
 /*
 bot.onText(/\/start/, (message) => {
     bot.sendMessage(message.chat.id, `
