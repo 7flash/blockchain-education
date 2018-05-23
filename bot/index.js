@@ -18,33 +18,37 @@ bot.onText(/\/start/, (message) => {
 });
 */
 
+const keyboard = {
+    reply_markup: {
+        inline_keyboard: [
+            [{
+                text: "Сгенерировать ключ",
+                url: "https://7flash.github.io/blockchain-education/bot/generate.html"
+            }],
+            [{
+                text: "Опубликовать курс",
+                url: "https://7flash.github.io/blockchain-education/bot/publish.html"
+            }],
+            [{
+                text: "Открыть доступ ученику",
+                url: "https://7flash.github.io/blockchain-education/bot/share.html"
+            }],
+            [{
+                text: "Расшифровать курс",
+                url: "https://7flash.github.io/blockchain-education/bot/access.html"
+            }]
+        ]
+    }
+};
+
 bot.onText(/\/start/, (message) => {
-   bot.sendMessage(message.chat.id, "Menu", {
-       reply_markup: {
-           inline_keyboard: [
-               [{
-                    text: "Сгенерировать ключ",
-                    url: "https://7flash.github.io/blockchain-education/bot/generate.html"
-               }],
-               [{
-                    text: "Опубликовать курс",
-                    url: "https://7flash.github.io/blockchain-education/bot/publish.html"
-               }],
-               [{
-                    text: "Открыть доступ ученику",
-                    url: "https://7flash.github.io/blockchain-education/bot/share.html"
-               }],
-               [{
-                    text: "Расшифровать курс",
-                    url: "https://7flash.github.io/blockchain-education/bot/access.html"
-               }]
-           ]
-       }
-   })
+   bot.sendMessage(message.chat.id, "Menu", keyboard);
 });
 
 bot.onText(/\/publish/, async (message) => {
     const data = JSON.parse(message.text.slice(8));
+
+    console.log(data);
 
     const courseName = data.name;
     const authorAddress = data.address;
@@ -52,13 +56,13 @@ bot.onText(/\/publish/, async (message) => {
 
     const vrs = EthCrypto.vrs.fromString(signature);
 
-    const courseAddress = await blockchain.publish(authorAddress, courseName, vrs);
+    const courseTx = await blockchain.publish(authorAddress, courseName, vrs);
 
-    bot.sendMessage(message.chat.id, courseAddress);
+    bot.sendMessage(message.chat.id, "Menu", keyboard);
 });
 
 bot.onText(/\/share/, async (message) => {
-    const data = JSON.parse(message.text.splice(6));
+    const data = JSON.parse(message.text.slice(6));
 
     const courseID = data.course;
     const studentAddress = data.address;
@@ -70,7 +74,7 @@ bot.onText(/\/share/, async (message) => {
 
     const tokenID = await blockchain.share(courseID, studentAddress, link, vrs);
 
-    bot.sendMessage(message.chat.id, tokenID);
+    bot.sendMessage(message.chat.id, "Menu", keyboard);
 });
 
 bot.onText(/\/access/, async (message) => {
