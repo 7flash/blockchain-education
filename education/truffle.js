@@ -8,8 +8,6 @@ let mnemonic = '';
 
 if(fs.existsSync(path.resolve(__dirname, "mnemonic"))) {
     mnemonic = fs.readFileSync(path.resolve(__dirname, "mnemonic")).toString().trim();
-} else {
-    console.log("Mnemonic not found");
 }
 
 let config = {};
@@ -43,7 +41,7 @@ if(mnemonic.length > 0) {
         provider: new HDWalletProvider(mnemonic, "https://ropsten.infura.io/jPkVat66IVKkmtAsy0DJ"),
         network_id: 3,
         gas: 4e6,
-        gasPrice: 80e9
+        gasPrice: 41e9
     };
 }
 
